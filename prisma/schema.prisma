@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String    // Hashed
+  role      String    @default("ATTENDEE") // ADMIN, ORGANIZER, or ATTENDEE
+  createdAt DateTime  @default(now())
+
+  organizedEvents Event[] @relation("EventOrganizer")
+  rsvps           RSVP[]
+
+  @@map("users")
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  organizerId String
+  approved    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  organizer   User      @relation("EventOrganizer", fields: [organizerId], references: [id])
+  rsvps       RSVP[]
+
+  @@map("events")
+}
+
+model RSVP {
+  id        String    @id @default(uuid())
+  userId    String
+  eventId   String
+  status    String    // GOING, MAYBE, or NOT_GOING
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id])
+  event     Event     @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, eventId])
+  @@map("rsvps")
+}

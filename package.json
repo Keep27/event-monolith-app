@@ -1,0 +1,37 @@
+{
+  "name": "event-monolith-app",
+  "version": "1.0.0",
+  "description": "A simple monolith event management application with authentication, user roles, and realtime features",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "start": "bun run dist/index.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio"
+  },
+  "keywords": ["event-management", "monolith", "elysia", "prisma", "websockets"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@elysiajs/cors": "^0.8.0",
+    "@elysiajs/static": "^0.8.0",
+    "@elysiajs/swagger": "^0.8.0",
+    "@prisma/client": "^5.7.1",
+    "bcryptjs": "^2.4.3",
+    "elysia": "^1.4.13",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.8",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/nodemailer": "^6.4.14",
+    "bun-types": "latest",
+    "prisma": "^5.7.1",
+    "typescript": "^5.3.3"
+  }
+}

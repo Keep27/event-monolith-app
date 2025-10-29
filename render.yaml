@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: event-monolith-app
+    env: bun
+    plan: free
+    buildCommand: bun install && bun run db:generate && bun run db:deploy
+    startCommand: bun run start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ETHEREAL_USER
+        sync: false
+      - key: ETHEREAL_PASS
+        sync: false
+      - key: NODE_ENV
+        value: production
+

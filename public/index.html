@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management App</title>
+    <meta name="theme-color" content="#2c3e50"/>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+</head>
+<body>
+    <div class="websocket-status" id="wsStatus">Disconnected</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Event Management App</h1>
+            <p>Create, manage, and RSVP to events with realtime updates</p>
+        </div>
+
+        <div id="authSection" class="auth-section">
+            <h2>Authentication</h2>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label>Role:</label>
+                <select id="role">
+                    <option value="ATTENDEE">Attendee</option>
+                    <option value="ORGANIZER">Organizer</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+            </div>
+            <button class="btn" onclick="signup()">Sign Up</button>
+            <button class="btn" onclick="login()">Login</button>
+            <div id="authMessage"></div>
+        </div>
+
+        <div id="appSection" class="events-section hidden">
+            <div class="user-info">
+                <strong>Logged in as:</strong> <span id="userEmail"></span> 
+                <span class="status-indicator" id="userRole"></span>
+                <button class="btn btn-danger" onclick="logout()" style="float: right;">Logout</button>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboardSection">
+                <h2>Dashboard - <span id="dashboardRole"></span></h2>
+                <div id="dashboardStats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0;">
+                    <div class="stat-card" style="background: #3498db; color: white; padding: 20px; border-radius: 8px;">
+                        <h3 id="totalEvents">0</h3>
+                        <p>Total Events</p>
+                    </div>
+                    <div class="stat-card" style="background: #27ae60; color: white; padding: 20px; border-radius: 8px;">
+                        <h3 id="totalRSVPs">0</h3>
+                        <p>My RSVPs</p>
+                    </div>
+                    <div id="organizedEventsCard" class="stat-card hidden" style="background: #e74c3c; color: white; padding: 20px; border-radius: 8px;">
+                        <h3 id="organizedEvents">0</h3>
+                        <p>Events I Organized</p>
+                    </div>
+                    <div id="pendingApprovalCard" class="stat-card hidden" style="background: #f39c12; color: white; padding: 20px; border-radius: 8px;">
+                        <h3 id="pendingEvents">0</h3>
+                        <p>Events Pending Approval</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="eventForm" class="hidden">
+                <h2>Create New Event</h2>
+                <div class="form-group">
+                    <label>Title:</label>
+                    <input type="text" id="eventTitle" placeholder="Event title">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" id="eventDescription" placeholder="Event description">
+                </div>
+                <div class="form-group">
+                    <label>Date:</label>
+                    <input type="datetime-local" id="eventDate">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="eventLocation" placeholder="Event location">
+                </div>
+                <button class="btn btn-success" onclick="createEvent()">Create Event</button>
+                <div id="eventMessage"></div>
+            </div>
+
+            <h2>Events</h2>
+            <div id="eventsList"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
