@@ -3,21 +3,33 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  ORGANIZER
+  ATTENDEE
+}
+
+enum RSVPStatus {
+  GOING
+  MAYBE
+  NOT_GOING
 }
 
 model User {
   id        String    @id @default(uuid())
   email     String    @unique
   password  String    // Hashed
-  role      String    @default("ATTENDEE") // ADMIN, ORGANIZER, or ATTENDEE
+  role      UserRole  @default(ATTENDEE)
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
+  // Relations
   organizedEvents Event[] @relation("EventOrganizer")
   rsvps           RSVP[]
-
-  @@map("users")
 }
 
 model Event {
@@ -26,26 +38,28 @@ model Event {
   description String
   date        DateTime
   location    String
-  organizerId String
   approved    Boolean   @default(false)
   createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
+  // Relations
+  organizerId String
   organizer   User      @relation("EventOrganizer", fields: [organizerId], references: [id])
   rsvps       RSVP[]
-
-  @@map("events")
 }
 
 model RSVP {
-  id        String    @id @default(uuid())
+  id        String     @id @default(uuid())
+  status    RSVPStatus
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
   userId    String
   eventId   String
-  status    String    // GOING, MAYBE, or NOT_GOING
-  createdAt DateTime  @default(now())
-
-  user      User      @relation(fields: [userId], references: [id])
-  event     Event     @relation(fields: [eventId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  event     Event      @relation(fields: [eventId], references: [id])
 
   @@unique([userId, eventId])
-  @@map("rsvps")
+}
 }

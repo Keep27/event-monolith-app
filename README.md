@@ -4,6 +4,6 @@
 
 | Name            | Student ID | Role / Contribution                                  |
 |-----------------|------------|----------------------------------------------------- |
-| Ndame Sepete    | 2410559    |      |
+| Ndame Sepete    | 2410559    |  Developer                                           |
 | Kondwani Mwelwa |            |      |
 | Chitoge Mumba   |            |      |
